@@ -1,10 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 // next 자체 라우터 Link
 import Link from "next/link";
-import { Menu } from "antd";
+import { Menu, Input, Row, Col } from "antd";
+import styled from "styled-components";
+
+import UserProfile from "../components/UserProfile";
+import LoginForm from "../components/LoginForm";
+
+const SearchInput = styled(Input.Search)`
+  vertical-align: middle;
+`;
 
 const AppLayout = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <div>
       <Menu mode="horizontal">
@@ -19,12 +28,36 @@ const AppLayout = ({ children }) => {
           </Link>
         </Menu.Item>
         <Menu.Item>
+          <SearchInput enterButton />
+        </Menu.Item>
+        <Menu.Item>
           <Link href="/signup">
             <a>회원가입</a>
           </Link>
         </Menu.Item>
       </Menu>
-      {children}
+      <Row gutter={8}>
+        {/* 24등분 기준: 모바일일 때 화면 전체 차지하다가 md 사이즈 되면 1/4, 1/2, 1/4 차지해서 한 줄에 나온다. */}
+        <Col xs={24} md={6}>
+          {isLoggedIn ? (
+            <UserProfile setIsLoggedIn={setIsLoggedIn} />
+          ) : (
+            <LoginForm setIsLoggedIn={setIsLoggedIn} />
+          )}
+        </Col>
+        <Col xs={24} md={12}>
+          {children}
+        </Col>
+        <Col xs={24} md={6}>
+          <a
+            href="https://blog.naver.com/irenek91"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Made by Yilin
+          </a>
+        </Col>
+      </Row>
     </div>
   );
 };
