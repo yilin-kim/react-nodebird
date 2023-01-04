@@ -1,4 +1,6 @@
 import React, { useCallback, useState, useMemo } from "react";
+import useInput from "../hooks/useInput";
+import PropTypes from "prop-types";
 import { Form, Input, Button } from "antd";
 import Link from "next/link";
 import styled from "styled-components";
@@ -14,17 +16,17 @@ const FormWrapper = styled(Form)`
 // const style = useMemo(() => ({ marginTop: 10 }), []);
 
 const LoginForm = ({ setIsLoggedIn }) => {
-  const [id, setId] = useState("");
-  const [password, setPassword] = useState("");
+  const [id, onChangeId] = useInput("");
+  const [password, onChangePassword] = useInput("");
 
   //  component에 props로 넘겨주는 함수는 useCallback으로 감싸주는 게 좋다.
-  const onChangeId = useCallback((e) => {
-    setId(e.target.value);
-  }, []);
+  //   const onChangeId = useCallback((e) => {
+  //     setId(e.target.value);
+  //   }, []);
 
-  const onChangePassword = useCallback((e) => {
-    setPassword(e.target.value);
-  }, []);
+  //   const onChangePassword = useCallback((e) => {
+  //     setPassword(e.target.value);
+  //   }, []);
 
   //   onFinish는 이미 preventDefault 적용되어 있다.
   const onSubmitForm = useCallback(() => {
@@ -65,6 +67,10 @@ const LoginForm = ({ setIsLoggedIn }) => {
       </ButtonWrapper>
     </FormWrapper>
   );
+};
+
+LoginForm.propTypes = {
+  setIsLoggedIn: PropTypes.func.isRequired,
 };
 
 export default LoginForm;
